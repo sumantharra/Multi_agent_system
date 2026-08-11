@@ -149,7 +149,7 @@ wheels = [
 ]
 
 [[package]]
-name = "milk-supply-api"
+name = "multi-agent-api"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [

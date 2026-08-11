@@ -1,4 +1,4 @@
-# Milk Supply Multi-Agent AI Platform
+# Multi-Agent AI Platform
 
 Phase 1 provides the project foundation: a FastAPI health endpoint and a React status page that verifies frontend-to-backend connectivity.
 

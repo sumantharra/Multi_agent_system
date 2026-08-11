@@ -1,6 +1,6 @@
-# Milk Supply Multi-Agent AI Platform — Detailed Architecture
+# Multi-Agent AI Platform — Detailed Architecture
 
-This document is the master architecture reference for the Milk Supply Multi-Agent AI Platform. It aligns with the project specification: **business app first**, then **document AI**, then **multi-agent layer**, then **production on AWS**.
+This document is the master architecture reference for the Multi-Agent AI Platform. It aligns with the project specification: **business app first**, then **document AI**, then **multi-agent layer**, then **production on AWS**.
 
 Sections **21–33** lock V1 business rules, API contracts, extraction behavior, auth sequencing, ADRs, and go-live ops so implementers do not invent conflicting defaults.
 
@@ -175,7 +175,7 @@ flowchart TB
 ## 3. Repository / Code Architecture
 
 ```
-milk-ai-platform/
+multi-agent-system/
 ├── frontend/
 │   ├── src/
 │   │   ├── api/                 # Axios/fetch wrappers
@@ -703,7 +703,7 @@ flowchart TB
 #### SQL Agent
 
 **Example questions:**
-- "How much milk did Sai Hostel receive in July?"
+- "How much did Sai Hostel receive in July?"
 - "Which hostels have unpaid invoices?"
 - "What was July revenue?"
 - "Who are the top 10 debtors?"
@@ -800,7 +800,7 @@ flowchart LR
 
 | Question type | Route |
 |---------------|-------|
-| "How much milk in July?" | SQL Agent |
+| "How much was delivered in July?" | SQL Agent |
 | "What do payment terms say?" | RAG Agent |
 | "Export July billing Excel" | Report Agent |
 
@@ -810,8 +810,8 @@ flowchart LR
 |-------|-------------|
 | Payment Reminder Agent | Send reminders for overdue invoices |
 | Automatic Invoice Agent | Auto-generate invoices from deliveries |
-| Demand Forecast Agent | Predict future milk demand |
-| Inventory Agent | Track/manage milk inventory |
+| Demand Forecast Agent | Predict future demand |
+| Inventory Agent | Track/manage inventory |
 | WhatsApp Agent | Notifications via WhatsApp |
 | Email Agent | Invoices, reminders, reports via email |
 | Route Optimization Agent | Optimize delivery routes |
@@ -990,8 +990,8 @@ flowchart TB
 flowchart TB
     USER["Browser"]
 
-    USER --> WWW["www.milkmanager.com"]
-    USER --> API["api.milkmanager.com"]
+    USER --> WWW["www.supplyplatform.com"]
+    USER --> API["api.supplyplatform.com"]
 
     WWW --> CF["CloudFront"]
     CF --> S3WEB["S3 static React build"]
@@ -1143,7 +1143,7 @@ Open AI Assistant → "How much did Sai Hostel receive in July?"
 ### Production live user flow
 
 ```
-1. User opens https://www.milkmanager.com
+1. User opens https://www.supplyplatform.com
 2. User logs in
 3. Dashboard loads verified business data
 4. User uploads monthly PDF(s)
@@ -1381,7 +1381,7 @@ These rules are binding for implementation. Change them only via an ADR update.
 
 ### 21.1 Tenancy and scope
 
-- V1 is a **single-business** system (one milk supplier). No `org_id` / multi-tenant isolation yet.
+- V1 is a **single-business** system (one supplier). No `org_id` / multi-tenant isolation yet.
 - Staff users only (Owner, Accountant, Delivery Manager, Viewer). No hostel customer portal in V1.
 
 ### 21.2 Units, currency, timezone
@@ -1877,4 +1877,4 @@ Main variable cost during development: LLM and OCR usage. These are planning est
 
 ---
 
-*Document version: 1.1 — Milk Supply Multi-Agent AI Platform Architecture (gaps closed: business rules, API contracts, extraction, auth sequencing, ADRs, ops)*
+*Document version: 1.1 — Multi-Agent AI Platform Architecture (gaps closed: business rules, API contracts, extraction, auth sequencing, ADRs, ops)*

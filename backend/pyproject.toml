@@ -1,7 +1,7 @@
 [project]
-name = "milk-supply-api"
+name = "multi-agent-api"
 version = "0.1.0"
-description = "Backend API for the Milk Supply platform"
+description = "Backend API for the Multi-Agent platform"
 requires-python = ">=3.13,<3.14"
 dependencies = [
     "fastapi>=0.116,<1.0",

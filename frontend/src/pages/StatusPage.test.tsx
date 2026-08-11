@@ -27,7 +27,7 @@ describe('StatusPage', () => {
       new Response(
         JSON.stringify({
           status: 'ok',
-          service: 'milk-supply-api',
+          service: 'multi-agent-api',
           environment: 'development',
         }),
         { status: 200, headers: { 'Content-Type': 'application/json' } },
@@ -38,7 +38,7 @@ describe('StatusPage', () => {
 
     expect(screen.getByText('Checking backend connection…')).toBeInTheDocument()
     expect(await screen.findByText('Backend connected')).toBeInTheDocument()
-    expect(screen.getByText('milk-supply-api · development')).toBeInTheDocument()
+    expect(screen.getByText('multi-agent-api · development')).toBeInTheDocument()
   })
 
   it('shows a clear error when the backend is unavailable', async () => {

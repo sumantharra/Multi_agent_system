@@ -5,7 +5,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    app_name: str = "Milk Supply API"
+    app_name: str = "Multi-Agent API"
     app_env: str = "development"
     log_level: str = "INFO"
     cors_origins: list[str] = ["http://localhost:5173"]

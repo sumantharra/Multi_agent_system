@@ -10,7 +10,7 @@ router = APIRouter(tags=["health"])
 def health_check() -> HealthResponse:
     settings: Settings = get_settings()
     return HealthResponse(
-        service="milk-supply-api",
+        service="multi-agent-api",
         environment=settings.app_env,
     )
 

@@ -1,2 +1,2 @@
-"""Milk Supply API application package."""
+"""Multi-Agent API application package."""
 
