@@ -15,13 +15,13 @@ export function StatusPage() {
     <main className="flex min-h-screen items-center justify-center px-6 py-12">
       <section className="w-full max-w-xl rounded-3xl border border-emerald-100 bg-white p-8 shadow-xl shadow-emerald-950/5 sm:p-12">
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
-          Multi-Agent Platform
+          rrvijayamilkagencies.com
         </p>
         <h1 className="text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-          Foundation status
+          RR Vijaya Milk Agencies
         </h1>
         <p className="mt-4 leading-7 text-slate-600">
-          Phase 1 verifies that the browser application can communicate with the API.
+          System status — checks that the website can reach the API.
         </p>
 
         <div

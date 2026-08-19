@@ -1,0 +1,54 @@
+"""create hostels table
+
+Revision ID: 20260812_0001
+Revises:
+Create Date: 2026-08-12 12:00:00
+
+"""
+
+from collections.abc import Sequence
+
+import sqlalchemy as sa
+
+from alembic import op
+
+revision: str = "20260812_0001"
+down_revision: str | Sequence[str] | None = None
+branch_labels: str | Sequence[str] | None = None
+depends_on: str | Sequence[str] | None = None
+
+
+def upgrade() -> None:
+    op.create_table(
+        "hostels",
+        sa.Column("id", sa.Uuid(), nullable=False),
+        sa.Column("name", sa.String(length=200), nullable=False),
+        sa.Column("code", sa.String(length=50), nullable=False),
+        sa.Column("address", sa.Text(), nullable=True),
+        sa.Column("contact_name", sa.String(length=120), nullable=True),
+        sa.Column("phone", sa.String(length=40), nullable=True),
+        sa.Column("default_rate_per_liter", sa.Numeric(precision=14, scale=2), nullable=False),
+        sa.Column("active", sa.Boolean(), server_default="true", nullable=False),
+        sa.Column(
+            "created_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.Column(
+            "updated_at",
+            sa.DateTime(timezone=True),
+            server_default=sa.text("now()"),
+            nullable=False,
+        ),
+        sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("code"),
+    )
+    op.create_index(op.f("ix_hostels_code"), "hostels", ["code"], unique=False)
+    op.create_index("ix_hostels_code_lower", "hostels", [sa.text("lower(code)")], unique=True)
+
+
+def downgrade() -> None:
+    op.drop_index("ix_hostels_code_lower", table_name="hostels")
+    op.drop_index(op.f("ix_hostels_code"), table_name="hostels")
+    op.drop_table("hostels")
