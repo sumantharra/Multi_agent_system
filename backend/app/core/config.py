@@ -28,6 +28,9 @@ class Settings(BaseSettings):
     jwt_refresh_ttl_days: int = 7
     bootstrap_admin_email: str = "admin@local.test"
     bootstrap_admin_password: str = "change-me"
+    storage_backend: str = "local"
+    local_upload_dir: str = "./uploads"
+    max_upload_bytes: int = 10_485_760
 
     model_config = SettingsConfigDict(
         env_file=(_ROOT_ENV if _ROOT_ENV.exists() else _LOCAL_ENV),

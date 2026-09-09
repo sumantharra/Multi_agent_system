@@ -1,4 +1,5 @@
 from collections.abc import Generator
+from pathlib import Path
 
 import pytest
 from fastapi.testclient import TestClient
@@ -13,13 +14,16 @@ from app.main import app as fastapi_app
 
 
 @pytest.fixture()
-def settings() -> Settings:
+def settings(tmp_path: Path) -> Settings:
     return Settings(
         app_env="development",
         allow_unauthenticated=True,
         database_url="sqlite:///:memory:",
         jwt_secret="test-secret-at-least-32-bytes-long",
         bootstrap_admin_password="test-admin-pass",
+        storage_backend="local",
+        local_upload_dir=str(tmp_path / "uploads"),
+        max_upload_bytes=10_485_760,
     )
 
 

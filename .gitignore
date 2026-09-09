@@ -19,3 +19,7 @@ frontend/*.tsbuildinfo
 # Editors
 .idea/
 .vscode/
+
+# Uploaded originals (local storage backend)
+uploads/
+backend/uploads/
