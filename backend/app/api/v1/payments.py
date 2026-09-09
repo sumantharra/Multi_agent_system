@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.api.deps import get_database_session, require_dev_access
 from app.schemas.hostel import PaginatedResponse
-from app.schemas.payment import PaymentCreate, PaymentRead
+from app.schemas.payment import PaymentCreate, PaymentRead, PaymentUpdate
 from app.services.payment import PaymentService
 
 router = APIRouter(
@@ -60,4 +60,14 @@ def get_payment(
     db: Session = Depends(get_database_session),
 ) -> PaymentRead:
     payment = PaymentService(db).get(payment_id)
+    return PaymentRead.model_validate(payment)
+
+
+@router.put("/{payment_id}", response_model=PaymentRead)
+def update_payment(
+    payment_id: UUID,
+    payload: PaymentUpdate,
+    db: Session = Depends(get_database_session),
+) -> PaymentRead:
+    payment = PaymentService(db).update(payment_id, payload)
     return PaymentRead.model_validate(payment)

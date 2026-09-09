@@ -93,6 +93,35 @@ def test_overpayment_marks_invoice_paid(client: TestClient) -> None:
     )
     assert response.status_code == 201
     assert client.get(f"/api/v1/invoices/{invoice_id}").json()["payment_status"] == "paid"
+    notes = response.json()["notes"] or ""
+    assert "overpay" in notes
+    assert "Overpayment excess: 50.00 INR" in notes
+
+
+def test_update_payment_recomputes_invoice_status(client: TestClient) -> None:
+    _, invoice_id = _create_invoice(client)
+    total = Decimal(client.get(f"/api/v1/invoices/{invoice_id}").json()["total_amount"])
+    created = client.post(
+        "/api/v1/payments",
+        json={
+            "invoice_id": invoice_id,
+            "amount": str(total),
+            "payment_date": "2026-08-04",
+            "payment_method": "cash",
+        },
+    )
+    assert created.status_code == 201
+    assert client.get(f"/api/v1/invoices/{invoice_id}").json()["payment_status"] == "paid"
+    assert created.json()["updated_at"]
+
+    updated = client.put(
+        f"/api/v1/payments/{created.json()['id']}",
+        json={"amount": "10.00"},
+    )
+    assert updated.status_code == 200
+    assert Decimal(updated.json()["amount"]) == Decimal("10.00")
+    assert updated.json()["updated_at"]
+    assert client.get(f"/api/v1/invoices/{invoice_id}").json()["payment_status"] == "partial"
 
 
 def test_overdue_when_partial_and_due_date_passed(client: TestClient) -> None:

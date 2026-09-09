@@ -29,10 +29,12 @@ class PaymentRepository:
         statement = select(Payment).where(Payment.idempotency_key == key)
         return self.db.scalar(statement)
 
-    def sum_for_invoice(self, invoice_id: UUID) -> Decimal:
+    def sum_for_invoice(self, invoice_id: UUID, *, exclude_id: UUID | None = None) -> Decimal:
         statement = select(func.coalesce(func.sum(Payment.amount), 0)).where(
             Payment.invoice_id == invoice_id
         )
+        if exclude_id is not None:
+            statement = statement.where(Payment.id != exclude_id)
         return Decimal(str(self.db.scalar(statement) or 0))
 
     def list(
