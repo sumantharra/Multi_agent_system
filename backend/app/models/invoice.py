@@ -1,6 +1,7 @@
 import uuid
 from datetime import date, datetime
 from decimal import Decimal
+from typing import TYPE_CHECKING
 
 from sqlalchemy import Date, DateTime, ForeignKey, Numeric, String, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID
@@ -8,6 +9,9 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.types import Uuid
 
 from app.database.base import Base
+
+if TYPE_CHECKING:
+    from app.models.payment import Payment
 
 PAYMENT_STATUSES = ("unpaid", "partial", "paid", "overdue")
 
@@ -71,6 +75,7 @@ class Invoice(Base):
         cascade="all, delete-orphan",
         order_by="InvoiceItem.description",
     )
+    payments: Mapped[list["Payment"]] = relationship(back_populates="invoice")
 
 
 class InvoiceItem(Base):
