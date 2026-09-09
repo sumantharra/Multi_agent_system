@@ -1,11 +1,10 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { Link, useNavigate } from 'react-router-dom'
 
 import { ApiError } from '../api/client'
 import { createHostel, deactivateHostel, listHostels } from '../api/hostels'
-import { useAuth } from '../auth/AuthContext'
+import { PageEmpty, PageError, PageLoading } from '../components/PageState'
 
 const emptyForm = {
   name: '',
@@ -18,8 +17,6 @@ const emptyForm = {
 
 export function HostelsPage() {
   const queryClient = useQueryClient()
-  const navigate = useNavigate()
-  const { user, logout } = useAuth()
   const [form, setForm] = useState(emptyForm)
   const [formError, setFormError] = useState<string | null>(null)
 
@@ -68,38 +65,11 @@ export function HostelsPage() {
   const items = hostelsQuery.data?.items ?? []
 
   return (
-    <main className="mx-auto min-h-screen w-full max-w-5xl px-6 py-10">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
-        <div>
-          <p className="mb-2 text-sm font-semibold uppercase tracking-[0.2em] text-emerald-700">
-            rrvijayamilkagencies.com
-          </p>
-          <h1 className="text-3xl font-bold tracking-tight text-slate-900">Hostels</h1>
-          <p className="mt-2 text-slate-600">
-            RR Vijaya Milk Agencies · signed in as {user?.email}
-          </p>
-        </div>
-        <div className="flex gap-4">
-          <Link
-            to="/"
-            className="text-sm font-medium text-emerald-800 underline-offset-4 hover:underline"
-          >
-            Status
-          </Link>
-          <button
-            type="button"
-            className="text-sm font-medium text-slate-700 underline-offset-4 hover:underline"
-            onClick={async () => {
-              await logout()
-              navigate('/login', { replace: true })
-            }}
-          >
-            Log out
-          </button>
-        </div>
-      </div>
+    <div className="mx-auto w-full max-w-5xl">
+      <h1 className="text-3xl font-bold tracking-tight text-slate-900">Hostels</h1>
+      <p className="mt-2 text-slate-600">Master data for supply locations and default rates.</p>
 
-      <section className="mb-8 rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-950/5 sm:p-8">
+      <section className="mt-8 mb-8 rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-950/5 sm:p-8">
         <h2 className="text-lg font-semibold text-slate-900">Add hostel</h2>
         <form className="mt-6 grid gap-4 sm:grid-cols-2" onSubmit={onSubmit}>
           <label className="grid gap-1 text-sm text-slate-700">
@@ -176,12 +146,12 @@ export function HostelsPage() {
       <section className="rounded-3xl border border-emerald-100 bg-white p-6 shadow-xl shadow-emerald-950/5 sm:p-8">
         <h2 className="text-lg font-semibold text-slate-900">Hostel list</h2>
 
-        {hostelsQuery.isLoading && <p className="mt-4 text-slate-600">Loading hostels…</p>}
+        {hostelsQuery.isLoading && <PageLoading message="Loading hostels…" />}
         {hostelsQuery.isError && (
-          <p className="mt-4 text-red-600">Could not load hostels. Is the backend running?</p>
+          <PageError message="Could not load hostels. Is the backend running?" />
         )}
         {hostelsQuery.isSuccess && items.length === 0 && (
-          <p className="mt-4 text-slate-600">No hostels yet. Add one above.</p>
+          <PageEmpty message="No hostels yet. Add one above." />
         )}
 
         {items.length > 0 && (
@@ -212,6 +182,6 @@ export function HostelsPage() {
           </ul>
         )}
       </section>
-    </main>
+    </div>
   )
 }
