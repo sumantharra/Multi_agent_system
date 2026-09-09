@@ -105,7 +105,7 @@ describe('AppShell', () => {
     expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
   })
 
-  it('opens deliveries, invoices, and payments pages', async () => {
+  it('opens deliveries, invoices, payments, and upload pages', async () => {
     renderApp('/deliveries')
     expect(await screen.findByRole('heading', { name: 'Deliveries' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Add delivery' })).toBeInTheDocument()
@@ -119,6 +119,11 @@ describe('AppShell', () => {
     renderApp('/payments')
     expect(await screen.findByRole('heading', { name: 'Payments' })).toBeInTheDocument()
     expect(screen.getByRole('heading', { name: 'Record payment' })).toBeInTheDocument()
+
+    cleanup()
+    renderApp('/upload')
+    expect(await screen.findByRole('heading', { name: 'Upload Documents' })).toBeInTheDocument()
+    expect(screen.getByRole('link', { name: 'Upload' })).toHaveAttribute('aria-current', 'page')
   })
 
   it('sends anonymous users to login', async () => {
