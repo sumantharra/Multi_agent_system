@@ -104,6 +104,22 @@ describe('AppShell', () => {
     )
   })
 
+  it('opens deliveries, invoices, and payments pages', async () => {
+    renderApp('/deliveries')
+    expect(await screen.findByRole('heading', { name: 'Deliveries' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Add delivery' })).toBeInTheDocument()
+
+    cleanup()
+    renderApp('/invoices')
+    expect(await screen.findByRole('heading', { name: 'Invoices' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Create invoice' })).toBeInTheDocument()
+
+    cleanup()
+    renderApp('/payments')
+    expect(await screen.findByRole('heading', { name: 'Payments' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Record payment' })).toBeInTheDocument()
+  })
+
   it('sends anonymous users to login', async () => {
     authState.user = null
     authState.token = null
