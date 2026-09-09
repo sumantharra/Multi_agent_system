@@ -96,12 +96,13 @@ describe('AppShell', () => {
     expect(screen.getByRole('heading', { name: 'Hostels' })).toBeInTheDocument()
   })
 
-  it('highlights dashboard as the active nav item', async () => {
-    renderApp('/dashboard')
+  it('lands authenticated users on the dashboard', async () => {
+    renderApp('/')
     expect(await screen.findByRole('link', { name: 'Dashboard' })).toHaveAttribute(
       'aria-current',
       'page',
     )
+    expect(screen.getByRole('heading', { name: 'Dashboard' })).toBeInTheDocument()
   })
 
   it('opens deliveries, invoices, and payments pages', async () => {

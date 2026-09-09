@@ -20,7 +20,7 @@ export function LoginPage() {
   })
 
   if (!loading && user) {
-    return <Navigate to="/hostels" replace />
+    return <Navigate to="/dashboard" replace />
   }
 
   async function onSubmit(event: FormEvent) {
@@ -29,7 +29,7 @@ export function LoginPage() {
     setSubmitting(true)
     try {
       await login(email.trim(), password)
-      navigate('/hostels', { replace: true })
+      navigate('/dashboard', { replace: true })
     } catch (err) {
       if (err instanceof ApiError) {
         const body = err.body as { error?: { message?: string } } | null

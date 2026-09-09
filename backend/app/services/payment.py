@@ -2,13 +2,12 @@ from dataclasses import dataclass
 from datetime import UTC, date, datetime
 from decimal import ROUND_HALF_UP, Decimal
 from uuid import UUID
-from zoneinfo import ZoneInfo
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
-from app.core.config import get_settings
 from app.core.exceptions import NotFoundError
+from app.core.time import business_today
 from app.models.invoice import Invoice
 from app.models.payment import Payment
 from app.repositories.invoice import InvoiceRepository
@@ -21,11 +20,6 @@ EXCESS_NOTE_PREFIX = "Overpayment excess:"
 
 def _as_money(value: Decimal) -> Decimal:
     return value.quantize(MONEY_QUANTUM, rounding=ROUND_HALF_UP)
-
-
-def business_today() -> date:
-    timezone = ZoneInfo(get_settings().business_timezone)
-    return datetime.now(timezone).date()
 
 
 def compute_payment_status(
