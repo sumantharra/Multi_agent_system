@@ -31,6 +31,23 @@ class DeliveryRepository:
         )
         return self.db.scalar(statement)
 
+    def list_for_hostel_period(
+        self,
+        hostel_id: UUID,
+        date_from: date,
+        date_to: date,
+    ) -> list[Delivery]:
+        statement = (
+            select(Delivery)
+            .where(
+                Delivery.hostel_id == hostel_id,
+                Delivery.delivery_date >= date_from,
+                Delivery.delivery_date <= date_to,
+            )
+            .order_by(Delivery.delivery_date.asc())
+        )
+        return list(self.db.scalars(statement).all())
+
     def list(
         self,
         *,
