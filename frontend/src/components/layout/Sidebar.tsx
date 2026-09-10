@@ -6,6 +6,7 @@ const navItems = [
   { to: '/deliveries', label: 'Deliveries' },
   { to: '/invoices', label: 'Invoices' },
   { to: '/payments', label: 'Payments' },
+  { to: '/upload', label: 'Upload' },
 ] as const
 
 export function Sidebar() {

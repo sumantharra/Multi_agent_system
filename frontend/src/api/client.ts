@@ -30,7 +30,7 @@ async function parseJson(response: Response): Promise<unknown> {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   const headers = new Headers(init?.headers)
   headers.set('Accept', 'application/json')
-  if (init?.body) {
+  if (init?.body && !(init.body instanceof FormData)) {
     headers.set('Content-Type', 'application/json')
   }
   const token = tokenGetter()
@@ -61,6 +61,10 @@ export async function apiPost<T>(path: string, payload?: unknown): Promise<T> {
     method: 'POST',
     body: payload === undefined ? undefined : JSON.stringify(payload),
   })
+}
+
+export async function apiPostForm<T>(path: string, form: FormData): Promise<T> {
+  return request<T>(path, { method: 'POST', body: form })
 }
 
 export async function apiPut<T>(path: string, payload: unknown): Promise<T> {
